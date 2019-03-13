@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment'
 import { Observable } from 'rxjs';
@@ -52,11 +53,22 @@ export class RegisterComponent implements OnInit {
     //  console.log(this.registrationForm.value);
     if(this.usersCollection.add(this.registrationForm.value)) {
       firebase.auth().createUserWithEmailAndPassword(this.registrationForm.value.emailAddress, this.registrationForm.value.password)
+        .then(function(){
+          window.location.href = '../../profile/profile.component.html';
+        })
         .catch(function (error) {
           var errorCode = error.code;
           var errorMessage = error.message;
-          console.log(`{{errorCode}}, {{errorMessage}}`);
+          console.log(`${errorCode}, ${errorMessage}`);
       });
+
+      // firebase.auth().currentUser.sendEmailVerification().then(function(){
+      //   console.log('Email has been sent for verification');
+      // }).catch(function(error){
+      //   var errorCode = error.code;
+      //   var errorMessage = error.message;
+      //   console.log(`{{errorCode}}, {{errorMessage}}`);
+      // });
     }
      
    }

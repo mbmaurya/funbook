@@ -13,6 +13,9 @@ import { LoginComponent } from './authenticate/login/login.component';
 import { RegisterComponent } from './authenticate/register/register.component';
 import { ForgotpasswordComponent } from './authenticate/forgotpassword/forgotpassword.component';
 import { environment } from '../environments/environment';
+import { ProfileComponent } from './profile/profile.component';
+
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,8 @@ import { environment } from '../environments/environment';
     AuthenticateComponent,
     LoginComponent,
     RegisterComponent,
-    ForgotpasswordComponent
+    ForgotpasswordComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
