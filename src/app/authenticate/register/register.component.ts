@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { AppRoutingModule } from '../../app-routing.module';
 
 import { environment } from '../../../environments/environment'
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
+
+declare let $:any;
 
 export interface User {
   firstName: string;
@@ -16,13 +19,14 @@ export interface User {
   dob: Date;
 }
 
+// let registartionResponse;
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  
 
   registrationForm = this.fb.group({
     firstName: ['', Validators.required],
@@ -42,35 +46,27 @@ export class RegisterComponent implements OnInit {
   private usersCollection: AngularFirestoreCollection<User>;
   users: Observable<User[]>;
 
-  constructor(private fb: FormBuilder, private afs: AngularFirestore) {
+  constructor(private fb: FormBuilder, private afs: AngularFirestore, public router: Router) {
     this.usersCollection = afs.collection<User>('users');
     this.users = this.usersCollection.valueChanges();
    }
 
    registerUser(user: User) {
      console.log('Signup Pressed');
-     console.log(user);
-    //  console.log(this.registrationForm.value);
     if(this.usersCollection.add(this.registrationForm.value)) {
       firebase.auth().createUserWithEmailAndPassword(this.registrationForm.value.emailAddress, this.registrationForm.value.password)
         .then(function(){
-          window.location.href = '../../profile/profile.component.html';
+          console.log('User registered successfully');
+          alert('Registration successful. Please login with your credentials');          
         })
         .catch(function (error) {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log(`${errorCode}, ${errorMessage}`);
+          alert(`${errorMessage}`);
       });
-
-      // firebase.auth().currentUser.sendEmailVerification().then(function(){
-      //   console.log('Email has been sent for verification');
-      // }).catch(function(error){
-      //   var errorCode = error.code;
-      //   var errorMessage = error.message;
-      //   console.log(`{{errorCode}}, {{errorMessage}}`);
-      // });
+      this.registrationForm.reset();
     }
-     
    }
 
   ngOnInit() {
