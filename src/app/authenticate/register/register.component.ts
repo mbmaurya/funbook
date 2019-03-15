@@ -59,11 +59,11 @@ export class RegisterComponent implements OnInit {
           console.log('User registered successfully');
           alert('Registration successful. Please login with your credentials');          
         })
-        .catch(function (error) {
+        .catch(function (error,) {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log(`${errorCode}, ${errorMessage}`);
-          alert(`${errorMessage}`);
+          alert(`${errorMessage}`);          
       });
       this.registrationForm.reset();
     }
